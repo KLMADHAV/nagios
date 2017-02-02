@@ -1,1 +1,25 @@
 Follow this: http://tecadmin.net/install-nagios-core-service-on-centos-rhel/#
+
+Install CentOS nagios Linux client:
+------------------------------------------
+
+enable epel repo
+
+yum install nrpe -y
+
+edit /etc/nagios/nrpe.cfg
+
+allowed_hosts=127.0.0.1
+to
+allowed_hsots=127.0.0.1,10.128.0.2
+<10.128.0.2> that is my nagios server IP
+
+systemctl restart nrpe
+
+From Server:
+/usr/local/nagios/libexec/check_nrpe -H 10.128.0.3
+
+O/P expected is 
+
+NRPE v2.15
+

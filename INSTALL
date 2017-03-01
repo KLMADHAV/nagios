@@ -1,25 +1,45 @@
-Follow this: http://tecadmin.net/install-nagios-core-service-on-centos-rhel/#
+Nagios Remote Plugin Executor
 
-Install CentOS nagios Linux client:
-------------------------------------------
+1) Simple Arch
+2) Open Source
+3) Wide number of Plugins
 
-enable epel repo
 
-yum install nrpe -y
+Ref Link : https://www.digitalocean.com/community/tutorials/how-to-install-nagios-4-and-monitor-your-servers-on-centos-7
 
-edit /etc/nagios/nrpe.cfg
 
-allowed_hosts=127.0.0.1
-to
-allowed_hsots=127.0.0.1,10.128.0.2
-<10.128.0.2> that is my nagios server IP
+# sudo yum install gcc glibc glibc-common gd gd-devel make net-snmp openssl-devel xinetd unzip httpd php -y
 
-systemctl restart nrpe
+# sudo useradd nagios
+# sudo groupadd nagcmd
+# sudo usermod -a -G nagcmd nagios
+# sudo usermod -G nagcmd apache
 
-From Server:
-/usr/local/nagios/libexec/check_nrpe -H 10.128.0.3
+https://www.nagios.org/downloads/nagios-core/thanks/
 
-O/P expected is 
+# wget "https://assets.nagios.com/downloads/nagioscore/releases/nagios-4.3.1.tar.gz#_ga=1.142921139.726799564.1488342068" -O nagios-4.3.1.tar.gz
 
-NRPE v2.15
+# tar xzf nagios-4.3.1.tar.gz
+# cd nagios-4.3.1
 
+# ./configure --with-command-group=nagcmd 
+# make all
+# make install && make install-commandmode &&  make install-init && make install-config && make install-webconf
+
+# wget http://nagios-plugins.org/download/nagios-plugins-2.2.0.tar.gz
+# tar xzf nagios-plugins-2.2.0.tar.gz
+# cd nagios-plugins-2.2.0
+# ./configure --with-nagios-user=nagios --with-nagios-group=nagios --with-openssl
+# make && make install
+
+
+#  wget "https://downloads.sourceforge.net/project/nagios/nrpe-3.x/nrpe-3.0.1.tar.gz?r=https%3A%2F%2Fsourceforge.net%2Fprojects%2Fnagios%2Ffiles%2Fnrpe-3.x%2F&ts=1488342808&use_mirror=excellmedia" -O nrpe-3.0.1.tar.gz
+
+# tar xzf nrpe-3.0.1.tar.gz
+# cd nrpe-3.0.1
+
+# ./configure --enable-command-args --with-nagios-user=nagios --with-nagios-group=nagios --with-ssl=/usr/bin/openssl --with-ssl-lib=/usr/lib/x86_64-linux-gnu
+# make all make install 
+
+# htpasswd -c /usr/local/nagios/etc/htpasswd.users nagiosadmin
+# systemctl restart httpd
